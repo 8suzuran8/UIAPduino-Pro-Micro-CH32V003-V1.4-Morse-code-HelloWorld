@@ -1,0 +1,220 @@
+/*
+  MorseCodeHelloWorld
+*/
+#define LED_BUILTIN 2
+const int MAX_SIZE = 6;
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(2000);
+  ledWriteString("Hello,World!");
+  // ledWriteString("SOS");
+}
+
+/*
+ルール
+短点「.（ドット）」1単位（例：0.1秒）
+長点「-（ダッシュ）」3単位（例：0.3秒）
+短点や長点の間の区切り	同一文字内の無音	1単位（例：0.1秒）
+文字と文字の間の区切り	別の文字との間の無音	3単位（例：0.3秒）
+単語と単語の間の区切り	単語間の無音	7単位（例：0.7秒）
+*/
+
+void ledWriteString(String s) {
+  for (int i = 0; i < s.length(); i ++) {
+    // int times = getTimes(s[i]);
+    int *times = getTimes(s.charAt(i));
+
+    for (int j = 0; j < MAX_SIZE; j ++) {
+      switch (times[j]) {
+        case 1:
+          digitalWrite(LED_BUILTIN, HIGH);  // change state of the LED by setting the pin to the HIGH voltage level
+          delay(100);
+          break;
+        case 2:
+          digitalWrite(LED_BUILTIN, HIGH);  // change state of the LED by setting the pin to the HIGH voltage level
+          delay(300);
+          break;
+        default:
+          break;
+      }
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(300);
+    }
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(700);
+  }
+}
+
+int* getTimes(char c) {
+  /*
+.を1(1単位)
+-を2(3単位)
+とする
+  */
+  static int times[MAX_SIZE] = {0, 0, 0, 0, 0, 0};
+  memset(times, 0, sizeof(times));
+  switch (toUpperCase(c)) {
+    case 'A': //	.-
+      times[0] = 1;
+      times[1] = 2;
+      break;
+    case 'B': //	-...
+      times[0] = 2;
+      times[1] = 1;
+      times[2] = 1;
+      times[3] = 1;
+      break;
+    case 'C': //	-.-.
+      times[0] = 2;
+      times[1] = 1;
+      times[2] = 2;
+      times[3] = 1;
+      break;
+    case 'D': //	-..
+      times[0] = 2;
+      times[1] = 1;
+      times[2] = 1;
+      break;
+    case 'E': //	.
+      times[0] = 1;
+      break;
+    case 'F': //	..-.
+      times[0] = 1;
+      times[1] = 1;
+      times[2] = 2;
+      times[3] = 1;
+      break;
+    case 'G': //	--.
+      times[0] = 2;
+      times[1] = 2;
+      times[2] = 1;
+      break;
+    case 'H': //	....
+      times[0] = 1;
+      times[1] = 1;
+      times[2] = 1;
+      times[3] = 1;
+      break;
+    case 'I': //	..
+      times[0] = 1;
+      times[1] = 1;
+      break;
+    case 'J': //	.---
+      times[0] = 1;
+      times[1] = 2;
+      times[2] = 2;
+      times[3] = 2;
+      break;
+    case 'K': //	-.-
+      times[0] = 2;
+      times[1] = 1;
+      times[2] = 2;
+      break;
+    case 'L': //	.-..
+      times[0] = 1;
+      times[1] = 2;
+      times[2] = 1;
+      times[3] = 1;
+      break;
+    case 'M': //	--
+      times[0] = 2;
+      times[1] = 2;
+      break;
+    case 'N': //	-.
+      times[0] = 2;
+      times[1] = 1;
+      break;
+    case 'O': //	---
+      times[0] = 2;
+      times[1] = 2;
+      times[2] = 2;
+      break;
+    case 'P': //	.--.
+      times[0] = 1;
+      times[1] = 2;
+      times[2] = 2;
+      times[3] = 1;
+      break;
+    case 'Q': //	--.-
+      times[0] = 2;
+      times[1] = 2;
+      times[2] = 1;
+      times[3] = 2;
+      break;
+    case 'R': //	.-.
+      times[0] = 1;
+      times[1] = 2;
+      times[2] = 1;
+      break;
+    case 'S': //	...
+      times[0] = 1;
+      times[1] = 1;
+      times[2] = 1;
+      break;
+    case 'T': //	-
+      times[0] = 2;
+      break;
+    case 'U': //	..-
+      times[0] = 1;
+      times[1] = 1;
+      times[2] = 2;
+      break;
+    case 'V': //	...-
+      times[0] = 1;
+      times[1] = 1;
+      times[2] = 1;
+      times[3] = 2;
+      break;
+    case 'W': //	.--
+      times[0] = 1;
+      times[1] = 2;
+      times[2] = 2;
+      break;
+    case 'X': //	-..-
+      times[0] = 2;
+      times[1] = 1;
+      times[2] = 1;
+      times[3] = 2;
+      break;
+    case 'Y': //	-.--
+      times[0] = 2;
+      times[1] = 1;
+      times[2] = 2;
+      times[3] = 2;
+      break;
+    case 'Z': //	--..
+      times[0] = 2;
+      times[1] = 2;
+      times[2] = 1;
+      times[3] = 1;
+      break;
+    case ',': //	--..--
+      times[0] = 2;
+      times[1] = 2;
+      times[2] = 1;
+      times[3] = 1;
+      times[4] = 2;
+      times[5] = 2;
+      break;
+    case '!': // -.-.--
+      times[0] = 2;
+      times[1] = 1;
+      times[2] = 2;
+      times[3] = 1;
+      times[4] = 2;
+      times[5] = 2;
+      break;
+    default:
+      break;
+  }
+
+  return times;
+}
